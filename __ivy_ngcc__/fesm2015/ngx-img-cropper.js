@@ -1885,6 +1885,7 @@ class ImageCropper extends ImageCropperModel {
         if (cropAspect > sourceAspect) {
             const imageH = Math.min(w * sourceAspect, h);
             // const cropW = imageH / cropAspect;
+            console.log(this.cropperSettings.showFullCropInitial);
             const cropW = (this.cropperSettings.showFullCropInitial) ? Math.min(h / sourceAspect, w) : imageH / cropAspect;
             tlPos = new PointPool().instance.borrow(cX - cropW / 2, cY + imageH / 2);
             trPos = new PointPool().instance.borrow(cX + cropW / 2, cY + imageH / 2);
@@ -1894,6 +1895,7 @@ class ImageCropper extends ImageCropperModel {
         else {
             const imageW = Math.min(h / sourceAspect, w);
             //const cropH = imageW * cropAspect;
+            console.log(this.cropperSettings.showFullCropInitial);
             const cropH = (this.cropperSettings.showFullCropInitial) ? Math.min(w * sourceAspect, h) : imageW * cropAspect;
             tlPos = new PointPool().instance.borrow(cX - imageW / 2, cY + cropH / 2);
             trPos = new PointPool().instance.borrow(cX + imageW / 2, cY + cropH / 2);
