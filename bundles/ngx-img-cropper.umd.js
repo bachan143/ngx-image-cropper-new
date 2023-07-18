@@ -54,7 +54,7 @@
             this.cropOnResize = true;
             this.preserveSize = false;
             this.compressRatio = 1.0;
-            this.showFullCropInitial=false;
+            this.showFullCropInitial=true;
             // tslint:disable-next-line:variable-name
             this._rounded = false;
             // tslint:disable-next-line:variable-name
