@@ -1,0 +1,1 @@
+{"version":3,"file":"ngx-img-cropper.d.ts","sources":["ngx-img-cropper.d.ts"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA","sourcesContent":["/**\r\n * Generated bundle index. Do not edit.\r\n */\r\nexport * from './public_api';\r\nexport { ImageCropperModel as ɵa } from './lib/image-cropper/model/imageCropperModel';\r\n"]}

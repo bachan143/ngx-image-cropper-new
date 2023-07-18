@@ -1,0 +1,60 @@
+{
+  "_args": [
+    [
+      "ngx-img-cropper@11.0.0",
+      "E:\\Snoopstar-Update"
+    ]
+  ],
+  "_from": "ngx-img-cropper@11.0.0",
+  "_id": "ngx-img-cropper@11.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-T7FfPan0ouDpIfmIjyyyHaejkxlXbYc4MQLcJp5NKV9vYqtQRU0rZUoe+yP1dOZbJ3hMsTWift1lko3lBbwhDg==",
+  "_location": "/ngx-img-cropper",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "ngx-img-cropper@11.0.0",
+    "name": "ngx-img-cropper",
+    "escapedName": "ngx-img-cropper",
+    "rawSpec": "11.0.0",
+    "saveSpec": null,
+    "fetchSpec": "11.0.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/ngx-img-cropper/-/ngx-img-cropper-11.0.0.tgz",
+  "_spec": "11.0.0",
+  "_where": "E:\\Snoopstar-Update",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "description": "An image cropping tool for Angular. Features a rectangular crop area. The crop area's aspect ratio can be enforced during dragging.\r The crop image can either be 1:1 or scaled to fit an area.",
+  "es2015_ivy_ngcc": "__ivy_ngcc__/fesm2015/ngx-img-cropper.js",
+  "es2015": "fesm2015/ngx-img-cropper.js",
+  "esm2015": "esm2015/ngx-img-cropper.js",
+  "fesm2015_ivy_ngcc": "__ivy_ngcc__/fesm2015/ngx-img-cropper.js",
+  "fesm2015": "fesm2015/ngx-img-cropper.js",
+  "main": "bundles/ngx-img-cropper.umd.js",
+  "metadata": "ngx-img-cropper.metadata.json",
+  "module_ivy_ngcc": "__ivy_ngcc__/fesm2015/ngx-img-cropper.js",
+  "module": "fesm2015/ngx-img-cropper.js",
+  "name": "ngx-img-cropper",
+  "peerDependencies": {
+    "@angular/common": ">=10.0.8",
+    "@angular/core": ">=10.0.8"
+  },
+  "sideEffects": false,
+  "typings": "ngx-img-cropper.d.ts",
+  "version": "11.0.0",
+  "__processed_by_ivy_ngcc__": {
+    "es2015": "14.3.0",
+    "fesm2015": "14.3.0",
+    "module": "14.3.0",
+    "typings": "14.3.0"
+  },
+  "scripts": {
+    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by NGCC. This is not allowed.\\nPlease delete and rebuild the package, without compiling with NGCC, before attempting to publish.\\nNote that NGCC may have been run by importing this package into another project that is being built with Ivy enabled.\\n')\" && exit 1"
+  }
+}
