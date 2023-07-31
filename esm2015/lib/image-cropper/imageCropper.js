@@ -683,8 +683,8 @@ export class ImageCropper extends ImageCropperModel {
         this.croppedImage = this.getCroppedImageHelper(false, this.cropWidth, this.cropHeight);
     }
     getCropPositionFromMarkers() {
-        const w = this.canvas.width;
-        const h = this.canvas.height;
+        let w = this.canvas.width;
+        let h = this.canvas.height;
         let tlPos;
         let trPos;
         let blPos;
