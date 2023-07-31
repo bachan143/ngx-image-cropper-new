@@ -171,6 +171,11 @@ export class ImageCropper extends ImageCropperModel {
             this.setImage(this.srcImage);
         }
     }
+    redrawImage() {
+        if (this.isImageSet()) {
+            this.setImage(this.srcImage);
+        }
+    };
     reset() {
         this.setImage(undefined);
     }
@@ -194,12 +199,13 @@ export class ImageCropper extends ImageCropperModel {
             h *= this.imageZoom;
             this.ratioW = w / this.srcImage.width;
             this.ratioH = h / this.srcImage.height;
-            if (canvasAspect < sourceAspect) {
-                this.drawImageIOSFix(ctx, this.srcImage, 0, 0, this.srcImage.width, this.srcImage.height, this.buffer.width / 2 - w / 2, 0, w, h);
-            }
-            else {
-                this.drawImageIOSFix(ctx, this.srcImage, 0, 0, this.srcImage.width, this.srcImage.height, 0, this.buffer.height / 2 - h / 2, w, h);
-            }
+            // if (canvasAspect < sourceAspect) {
+            //     this.drawImageIOSFix(ctx, this.srcImage, 0, 0, this.srcImage.width, this.srcImage.height, this.buffer.width / 2 - w / 2, 0, w, h);
+            // }
+            // else {
+            //     this.drawImageIOSFix(ctx, this.srcImage, 0, 0, this.srcImage.width, this.srcImage.height, 0, this.buffer.height / 2 - h / 2, w, h);
+            // }
+            this.drawImageIOSFix(ctx, this.srcImage, 0, 0, this.srcImage.width, this.srcImage.height, (this.buffer.width - w) / 2, (this.buffer.height - h) / 2, w, h);
             this.buffer.getContext('2d').drawImage(this.canvas, 0, 0, this.canvasWidth, this.canvasHeight);
             ctx.lineWidth = this.cropperSettings.cropperDrawSettings.strokeWidth;
             ctx.strokeStyle = this.cropperSettings.cropperDrawSettings.strokeColor;
@@ -239,10 +245,10 @@ export class ImageCropper extends ImageCropperModel {
     }
     dragCenter(x, y, marker) {
         const bounds = this.getBounds();
-        const left = x - bounds.width / 2;
-        const right = x + bounds.width / 2;
-        const top = y - bounds.height / 2;
-        const bottom = y + bounds.height / 2;
+        const left = x - (bounds.width / 2);
+        const right = x + (bounds.width / 2);
+        const top = y - (bounds.height / 2);
+        const bottom = y + (bounds.height / 2);
         if (right >= this.maxXClamp) {
             x = this.maxXClamp - bounds.width / 2;
         }
@@ -255,14 +261,14 @@ export class ImageCropper extends ImageCropperModel {
         if (bottom >= this.maxYClamp) {
             y = this.maxYClamp - bounds.height / 2;
         }
-        this.tl.moveX(x - bounds.width / 2);
-        this.tl.moveY(y - bounds.height / 2);
-        this.tr.moveX(x + bounds.width / 2);
-        this.tr.moveY(y - bounds.height / 2);
-        this.bl.moveX(x - bounds.width / 2);
-        this.bl.moveY(y + bounds.height / 2);
-        this.br.moveX(x + bounds.width / 2);
-        this.br.moveY(y + bounds.height / 2);
+        this.tl.moveX(x - (bounds.width / 2));
+        this.tl.moveY(y - (bounds.height / 2));
+        this.tr.moveX(x + (bounds.width / 2));
+        this.tr.moveY(y - (bounds.height / 2));
+        this.bl.moveX(x - (bounds.width / 2));
+        this.bl.moveY(y + (bounds.height / 2));
+        this.br.moveX(x + (bounds.width / 2));
+        this.br.moveY(y + (bounds.height / 2));
         marker.setPosition(x, y);
     }
     enforceMinSize(x, y, marker) {
