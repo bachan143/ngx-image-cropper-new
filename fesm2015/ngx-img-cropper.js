@@ -2356,6 +2356,7 @@ class CropPosition {
 class ImageCropperComponent {
     constructor(renderer, document) {
         this.document = document;
+        this.imageZoom = 1;
         this.cropPositionChange = new EventEmitter();
         this.exif = new Exif();
         // tslint:disable-next-line:no-output-on-prefix
@@ -2383,6 +2384,7 @@ class ImageCropperComponent {
         if (!this.cropper) {
             this.cropper = new ImageCropper(this.settings);
         }
+        this.cropper.setImageZoom(this.imageZoom);
         this.cropper.prepare(canvas);
     }
     ngOnChanges(changes) {
@@ -2404,6 +2406,10 @@ class ImageCropperComponent {
                 this.image.image = this.cropper.getCroppedImageHelper().src;
                 this.onCrop.emit(this.cropper.getCropBounds());
             }
+        }
+        if (changes.imageZoom && !!this.cropper && this.cropper.setImageZoom) {
+            this.cropper.setImageZoom(changes.imageZoom.currentValue);
+            this.cropper.redrawImage();
         }
     }
     ngOnDestroy() {
@@ -2601,6 +2607,7 @@ ImageCropperComponent.propDecorators = {
     settings: [{ type: Input }],
     image: [{ type: Input }],
     inputImage: [{ type: Input }],
+    imageZoom: [{ type: Input },],
     cropper: [{ type: Input }],
     cropPosition: [{ type: Input }],
     cropPositionChange: [{ type: Output }],

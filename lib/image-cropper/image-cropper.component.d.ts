@@ -10,6 +10,7 @@ export declare class ImageCropperComponent implements AfterViewInit, OnChanges, 
     settings: CropperSettings;
     image: any;
     inputImage: any;
+    imageZoom: number;
     cropper: ImageCropper;
     cropPosition: CropPosition;
     cropPositionChange: EventEmitter<CropPosition>;

@@ -1219,6 +1219,7 @@ class ImageCropper extends ImageCropperModel {
         this.crop = this;
         this.x = x;
         this.y = y;
+        this.imageZoom = 1;
         this.canvasHeight = cropperSettings.canvasHeight;
         this.canvasWidth = cropperSettings.canvasWidth;
         this.width = width;
@@ -1355,6 +1356,9 @@ class ImageCropper extends ImageCropperModel {
     updateSettings(cropperSettings) {
         this.cropperSettings = cropperSettings;
     }
+    setImageZoom(scale){
+        this.imageZoom = (scale && !isNaN(scale)) ? scale : 1;
+    };
     resizeCanvas(width, height, setImage = false) {
         this.canvas.width = this.cropCanvas.width = this.width = this.canvasWidth = this.buffer.width = width;
         this.canvas.height = this.cropCanvas.height = this.height = this.canvasHeight = this.buffer.height = height;
@@ -1381,6 +1385,8 @@ class ImageCropper extends ImageCropperModel {
                 h = this.canvasHeight;
                 w = this.canvasHeight / sourceAspect;
             }
+            w *= this.imageZoom;
+            h *= this.imageZoom;
             this.ratioW = w / this.srcImage.width;
             this.ratioH = h / this.srcImage.height;
             if (canvasAspect < sourceAspect) {
@@ -1792,6 +1798,8 @@ class ImageCropper extends ImageCropperModel {
             h = this.canvas.height;
             w = this.canvas.height / sourceAspect;
         }
+        w = (w * this.imageZoom > this.canvas.width) ? this.canvas.width : w * this.imageZoom;
+        h = (h * this.imageZoom > this.canvas.height) ? this.canvas.height : h * this.imageZoom;
         this.minXClamp = this.canvas.width / 2 - w / 2;
         this.minYClamp = this.canvas.height / 2 - h / 2;
         this.maxXClamp = this.canvas.width / 2 + w / 2;
@@ -1882,6 +1890,8 @@ class ImageCropper extends ImageCropperModel {
         const cropAspect = cropBounds.height / cropBounds.width;
         const cX = this.canvas.width / 2;
         const cY = this.canvas.height / 2;
+        w = (w * this.imageZoom > this.canvasWidth) ? this.canvasWidth : w * this.imageZoom;
+        h = (h * this.imageZoom > this.canvasHeight) ? this.canvasHeight : h * this.imageZoom;
         if (cropAspect > sourceAspect) {
             const imageH = Math.min(w * sourceAspect, h);
             const cropW = (this.cropperSettings.showFullCropInitial) ? Math.min(h / sourceAspect, w) : imageH / cropAspect;
@@ -1982,6 +1992,8 @@ class ImageCropper extends ImageCropperModel {
                     w = this.canvas.width;
                 }
             }
+            w *= this.imageZoom;
+            h *= this.imageZoom;
             this.ratioW = w / this.srcImage.width;
             this.ratioH = h / this.srcImage.height;
             const offsetH = (this.buffer.height - h) / 2 / this.ratioH;
