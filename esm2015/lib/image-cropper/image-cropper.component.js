@@ -5,44 +5,40 @@ import { CropPosition } from './model/cropPosition';
 import { Exif } from './exif';
 import { DOCUMENT } from '@angular/common';
 export class ImageCropperComponent {
-    constructor(renderer, document) {
-        this.document = document;
+    constructor(renderer) {
         this.imageZoom = 1;
         this.cropPositionChange = new EventEmitter();
-        this.exif = new Exif();
-        // tslint:disable-next-line:no-output-on-prefix
         this.onCrop = new EventEmitter();
         this.imageSet = new EventEmitter();
-        this.dragUnsubscribers = [];
         this.renderer = renderer;
     }
-    ngAfterViewInit() {
-        const canvas = this.cropcanvas.nativeElement;
+    ngAfterViewInit(){
+        var canvas = this.cropcanvas.nativeElement;
         if (!this.settings) {
             this.settings = new CropperSettings();
         }
         if (this.settings.cropperClass) {
-            this.renderer.setAttribute(canvas, 'class', this.settings.cropperClass);
+            this.renderer.setAttribute(canvas, "class", this.settings.cropperClass);
         }
         if (!this.settings.dynamicSizing) {
-            this.renderer.setAttribute(canvas, 'width', this.settings.canvasWidth.toString());
-            this.renderer.setAttribute(canvas, 'height', this.settings.canvasHeight.toString());
+            this.renderer.setAttribute(canvas, "width", this.settings.canvasWidth.toString());
+            this.renderer.setAttribute(canvas, "height", this.settings.canvasHeight.toString());
         }
         else {
             this.windowListener = this.resize.bind(this);
-            window.addEventListener('resize', this.windowListener);
+            window.addEventListener("resize", this.windowListener);
         }
         if (!this.cropper) {
             this.cropper = new ImageCropper(this.settings);
         }
         this.cropper.setImageZoom(this.imageZoom);
         this.cropper.prepare(canvas);
-    }
+    };
     ngOnChanges(changes) {
         if (this.isCropPositionChanged(changes)) {
             this.cropper.updateCropPosition(this.cropPosition.toBounds());
             if (this.cropper.isImageSet()) {
-                const bounds = this.cropper.getCropBounds();
+                var bounds = this.cropper.getCropBounds();
                 this.image.image = this.cropper.getCroppedImageHelper().src;
                 this.onCrop.emit(bounds);
             }
@@ -51,13 +47,6 @@ export class ImageCropperComponent {
         if (changes.inputImage) {
             this.setImage(changes.inputImage.currentValue);
         }
-        // if (changes.settings && this.cropper) {
-        //     this.cropper.updateSettings(this.settings);
-        //     if (this.cropper.isImageSet()) {
-        //         this.image.image = this.cropper.getCroppedImageHelper().src;
-        //         this.onCrop.emit(this.cropper.getCropBounds());
-        //     }
-        // }
         if (changes.settings && this.cropper && this.cropper.isImageSet()) {
             this.cropper.updateSettings(this.settings);
             this.image.image = this.cropper.getCroppedImageHelper().src;
@@ -67,19 +56,18 @@ export class ImageCropperComponent {
             this.cropper.setImageZoom(changes.imageZoom.currentValue);
             this.cropper.redrawImage();
         }
-    }
-    ngOnDestroy() {
-        this.removeDragListeners();
+    };
+    ngOnDestroy(){
         if (this.settings.dynamicSizing && this.windowListener) {
-            window.removeEventListener('resize', this.windowListener);
+            window.removeEventListener("resize", this.windowListener);
         }
-    }
+    };
     onTouchMove(event) {
         this.cropper.onTouchMove(event);
-    }
-    onTouchStart(event) {
+    };
+    onTouchStart (event) {
         this.cropper.onTouchStart(event);
-    }
+    };
     onTouchEnd(event) {
         this.cropper.onTouchEnd(event);
         if (this.cropper.isImageSet()) {
@@ -87,100 +75,96 @@ export class ImageCropperComponent {
             this.onCrop.emit(this.cropper.getCropBounds());
             this.updateCropBounds();
         }
-    }
+    };
     onMouseDown(event) {
-        this.dragUnsubscribers.push(this.renderer.listen(this.document, 'mousemove', this.onMouseMove.bind(this)));
-        this.dragUnsubscribers.push(this.renderer.listen(this.document, 'mouseup', this.onMouseUp.bind(this)));
         this.cropper.onMouseDown(event);
         // if (!this.cropper.isImageSet() && !this.settings.noFileInput) {
         //   // load img
         //   this.fileInput.nativeElement.click();
         // }
-    }
-    removeDragListeners() {
-        this.dragUnsubscribers.forEach(unsubscribe => unsubscribe());
-    }
+    };
     onMouseUp(event) {
-        this.removeDragListeners();
         if (this.cropper.isImageSet()) {
             this.cropper.onMouseUp(event);
             this.image.image = this.cropper.getCroppedImageHelper().src;
             this.onCrop.emit(this.cropper.getCropBounds());
             this.updateCropBounds();
         }
-    }
+    };
     onMouseMove(event) {
         this.cropper.onMouseMove(event);
-    }
+    };
     fileChangeListener($event) {
-        if ($event.target.files.length === 0) {
+        var _this = this;
+        if ($event.target.files.length === 0)
             return;
-        }
-        const file = $event.target.files[0];
+        var file = $event.target.files[0];
         if (this.settings.allowedFilesRegex.test(file.name)) {
-            const image = new Image();
-            const fileReader = new FileReader();
-            fileReader.addEventListener('loadend', (loadEvent) => {
-                image.addEventListener('load', () => {
-                    this.setImage(image);
+            var image_1 = new Image();
+            var fileReader = new FileReader();
+            fileReader.addEventListener("loadend", function (loadEvent) {
+                image_1.addEventListener("load", function () {
+                    _this.setImage(image_1);
                 });
-                image.src = loadEvent.target.result;
+                image_1.src = loadEvent.target.result;
             });
             fileReader.readAsDataURL(file);
         }
-    }
+    };
     resize() {
-        const canvas = this.cropcanvas.nativeElement;
+        var canvas = this.cropcanvas.nativeElement;
         this.settings.canvasWidth = canvas.offsetWidth;
         this.settings.canvasHeight = canvas.offsetHeight;
         this.cropper.resizeCanvas(canvas.offsetWidth, canvas.offsetHeight, true);
-    }
+    };
     reset() {
         this.cropper.reset();
-        this.renderer.setAttribute(this.cropcanvas.nativeElement, 'class', this.settings.cropperClass);
+        this.renderer.setAttribute(this.cropcanvas.nativeElement, "class", this.settings.cropperClass);
         this.image.image = this.cropper.getCroppedImageHelper().src;
-    }
-    setImage(image, newBounds = null) {
+    };
+    setImage(image, newBounds) {
+        var _this = this;
+        if (newBounds === void 0) { newBounds = null; }
         this.imageSet.emit(true);
-        this.renderer.setAttribute(this.cropcanvas.nativeElement, 'class', `${this.settings.cropperClass} ${this.settings.croppingClass}`);
-        this.raf = window.requestAnimationFrame(() => {
-            if (this.raf) {
-                window.cancelAnimationFrame(this.raf);
+        this.renderer.setAttribute(this.cropcanvas.nativeElement, "class", this.settings.cropperClass + " " + this.settings.croppingClass);
+        this.raf = window.requestAnimationFrame(function () {
+            if (_this.raf) {
+                window.cancelAnimationFrame(_this.raf);
             }
             if (image.naturalHeight > 0 && image.naturalWidth > 0) {
                 image.height = image.naturalHeight;
                 image.width = image.naturalWidth;
-                window.cancelAnimationFrame(this.raf);
-                this.getOrientedImage(image, (img) => {
-                    if (this.settings.dynamicSizing) {
-                        const canvas = this.cropcanvas.nativeElement;
-                        this.settings.canvasWidth = canvas.offsetWidth;
-                        this.settings.canvasHeight = canvas.offsetHeight;
-                        this.cropper.resizeCanvas(canvas.offsetWidth, canvas.offsetHeight, false);
+                window.cancelAnimationFrame(_this.raf);
+                _this.getOrientedImage(image, function (img) {
+                    if (_this.settings.dynamicSizing) {
+                        var canvas = _this.cropcanvas.nativeElement;
+                        _this.settings.canvasWidth = canvas.offsetWidth;
+                        _this.settings.canvasHeight = canvas.offsetHeight;
+                        _this.cropper.resizeCanvas(canvas.offsetWidth, canvas.offsetHeight, false);
                     }
-                    this.cropper.setImage(img);
-                    if (this.cropPosition && this.cropPosition.isInitialized()) {
-                        this.cropper.updateCropPosition(this.cropPosition.toBounds());
+                    _this.cropper.setImage(img);
+                    if (_this.cropPosition && _this.cropPosition.isInitialized()) {
+                        _this.cropper.updateCropPosition(_this.cropPosition.toBounds());
                     }
-                    this.image.original = img;
-                    let bounds = this.cropper.getCropBounds();
-                    this.image.image = this.cropper.getCroppedImageHelper().src;
-                    if (!this.image) {
-                        this.image = image;
+                    _this.image.original = img;
+                    var bounds = _this.cropper.getCropBounds();
+                    _this.image.image = _this.cropper.getCroppedImageHelper().src;
+                    if (!_this.image) {
+                        _this.image = image;
                     }
                     if (newBounds != null) {
                         bounds = newBounds;
-                        this.cropper.setBounds(bounds);
-                        this.cropper.updateCropPosition(bounds);
+                        _this.cropper.setBounds(bounds);
+                        _this.cropper.updateCropPosition(bounds);
                     }
-                    this.onCrop.emit(bounds);
+                    _this.onCrop.emit(bounds);
                 });
             }
         });
-    }
-    isCropPositionChanged(changes) {
+    };
+    isCropPositionChanged (changes) {
         if (this.cropper &&
-            changes.cropPosition &&
+            changes["cropPosition"] &&
             this.isCropPositionUpdateNeeded) {
             return true;
         }
@@ -188,24 +172,18 @@ export class ImageCropperComponent {
             this.isCropPositionUpdateNeeded = true;
             return false;
         }
-    }
-    updateCropBounds() {
-        const cropBound = this.cropper.getCropBounds();
+    };
+    updateCropBounds(){
+        var cropBound = this.cropper.getCropBounds();
         this.cropPositionChange.emit(new CropPosition(cropBound.left, cropBound.top, cropBound.width, cropBound.height));
         this.isCropPositionUpdateNeeded = false;
-    }
+    };
     getOrientedImage(image, callback) {
-        let img;
-        this.exif.getData(image, () => {
-            const orientation = this.exif.getTag(image, 'Orientation');
+        var img;
+        Exif.getData(image, function () {
+            var orientation = Exif.getTag(image, "Orientation");
             if ([3, 6, 8].indexOf(orientation) > -1) {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                let cw = image.width;
-                let ch = image.height;
-                let cx = 0;
-                let cy = 0;
-                let deg = 0;
+                var canvas = document.createElement("canvas"), ctx = canvas.getContext("2d"), cw = image.width, ch = image.height, cx = 0, cy = 0, deg = 0;
                 switch (orientation) {
                     case 3:
                         cx = -image.width;
@@ -229,22 +207,22 @@ export class ImageCropperComponent {
                 }
                 canvas.width = cw;
                 canvas.height = ch;
-                ctx.rotate((deg * Math.PI) / 180);
+                ctx.rotate(deg * Math.PI / 180);
                 ctx.drawImage(image, cx, cy);
-                img = document.createElement('img');
+                img = document.createElement("img");
                 img.width = cw;
                 img.height = ch;
-                img.addEventListener('load', () => {
+                img.addEventListener("load", function () {
                     callback(img);
                 });
-                img.src = canvas.toDataURL('image/png');
+                img.src = canvas.toDataURL("image/png");
             }
             else {
                 img = image;
                 callback(img);
             }
         });
-    }
+    };
 }
 ImageCropperComponent.decorators = [
     { type: Component, args: [{
