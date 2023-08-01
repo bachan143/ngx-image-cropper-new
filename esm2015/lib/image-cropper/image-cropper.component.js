@@ -51,12 +51,17 @@ export class ImageCropperComponent {
         if (changes.inputImage) {
             this.setImage(changes.inputImage.currentValue);
         }
-        if (changes.settings && this.cropper) {
+        // if (changes.settings && this.cropper) {
+        //     this.cropper.updateSettings(this.settings);
+        //     if (this.cropper.isImageSet()) {
+        //         this.image.image = this.cropper.getCroppedImageHelper().src;
+        //         this.onCrop.emit(this.cropper.getCropBounds());
+        //     }
+        // }
+        if (changes.settings && this.cropper && this.cropper.isImageSet()) {
             this.cropper.updateSettings(this.settings);
-            if (this.cropper.isImageSet()) {
-                this.image.image = this.cropper.getCroppedImageHelper().src;
-                this.onCrop.emit(this.cropper.getCropBounds());
-            }
+            this.image.image = this.cropper.getCroppedImageHelper().src;
+            this.onCrop.emit(this.cropper.getCropBounds());
         }
         if (changes.imageZoom && !!this.cropper && this.cropper.setImageZoom) {
             this.cropper.setImageZoom(changes.imageZoom.currentValue);

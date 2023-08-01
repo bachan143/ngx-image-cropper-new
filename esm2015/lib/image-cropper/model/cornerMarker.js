@@ -16,6 +16,18 @@ export class CornerMarker extends Handle {
         if (this.verticalNeighbour.position.y < this.position.y) {
             vDirection = -this.cropperSettings.markerSizeMultiplier;
         }
+         if (this.cropperSettings.rounded) {
+            var width = this.position.x - this.horizontalNeighbour.position.x;
+            var height = this.position.y - this.verticalNeighbour.position.y;
+            var offX = Math.round(Math.sin(Math.PI / 2) * Math.abs(width / 2)) / 4;
+            var offY = Math.round(Math.sin(Math.PI / 2) * Math.abs(height / 2)) / 4;
+            this.offset.x = hDirection > 0 ? offX : -offX;
+            this.offset.y = vDirection > 0 ? offY : -offY;
+        }
+        else {
+            this.offset.x = 0;
+            this.offset.y = 0;
+        }
         ctx.beginPath();
         if (this.cropperSettings.cropperDrawSettings.lineDash) {
             ctx.setLineDash([1, 3]);
@@ -46,18 +58,18 @@ export class CornerMarker extends Handle {
         if (this.verticalNeighbour.position.y < this.position.y) {
             vDirection = -this.cropperSettings.markerSizeMultiplier;
         }
-        if (this.cropperSettings.rounded) {
-            const width = this.position.x - this.horizontalNeighbour.position.x;
-            const height = this.position.y - this.verticalNeighbour.position.y;
-            const offX = Math.round(Math.sin(Math.PI / 2) * Math.abs(width / 2)) / 4;
-            const offY = Math.round(Math.sin(Math.PI / 2) * Math.abs(height / 2)) / 4;
-            this.offset.x = hDirection > 0 ? offX : -offX;
-            this.offset.y = vDirection > 0 ? offY : -offY;
-        }
-        else {
-            this.offset.x = 0;
-            this.offset.y = 0;
-        }
+        // if (this.cropperSettings.rounded) {
+        //     const width = this.position.x - this.horizontalNeighbour.position.x;
+        //     const height = this.position.y - this.verticalNeighbour.position.y;
+        //     const offX = Math.round(Math.sin(Math.PI / 2) * Math.abs(width / 2)) / 4;
+        //     const offY = Math.round(Math.sin(Math.PI / 2) * Math.abs(height / 2)) / 4;
+        //     this.offset.x = hDirection > 0 ? offX : -offX;
+        //     this.offset.y = vDirection > 0 ? offY : -offY;
+        // }
+        // else {
+        //     this.offset.x = 0;
+        //     this.offset.y = 0;
+        // }
         ctx.beginPath();
         if (this.cropperSettings.cropperDrawSettings.lineDash) {
             ctx.setLineDash([1, 3]);
